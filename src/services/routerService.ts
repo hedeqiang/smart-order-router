@@ -49,8 +49,7 @@ export class RouterService {
           chainId: chain.chainId,
           provider,
         });
-        
-        logger.info(`Initialized provider and router for ${chain.name}`);
+      
       } catch (error) {
         logger.error(`Failed to initialize provider for ${chain.name}`, { error });
       }

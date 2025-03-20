@@ -69,10 +69,4 @@ app.use((err: any, req: express.Request, res: express.Response, next: express.Ne
 const PORT = config.port;
 app.listen(PORT, () => {
   logger.info(`Server is running on port ${PORT}`);
-  logger.info('Supported chains:');
-  
-  // List all supported chains
-  Object.values(config.chains).forEach(chain => {
-    logger.info(`  - ${chain.name} (ID: ${chain.chainId})`);
-  });
 }); 

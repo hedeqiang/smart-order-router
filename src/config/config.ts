@@ -7,7 +7,7 @@ dotenv.config();
 // Network RPC URLs
 export interface ChainConfig {
   name: string;
-  chainId: ChainId;
+  chainId: number;
   rpcUrl: string;
 }
 
@@ -80,7 +80,36 @@ const config: AppConfig = {
       chainId: ChainId.BASE,
       rpcUrl: getEnv('BASE_RPC_URL', 'https://base-mainnet.infura.io/v3/YOUR_INFURA_API_KEY'),
     },
-    // Add other chains as needed
+    [ChainId.ZORA]: {
+      name: 'Zora',
+      chainId: ChainId.ZORA,
+      rpcUrl: getEnv('ZORA_RPC_URL', 'https://rpc.zora.energy'),
+    },
+    [ChainId.BLAST]: {
+      name: 'Blast',
+      chainId: ChainId.BLAST,
+      rpcUrl: getEnv('BLAST_RPC_URL', 'https://blast.blockpi.network/v1/rpc/public'),
+    },
+    [ChainId.ZKSYNC]: {
+      name: 'zkSync Era',
+      chainId: ChainId.ZKSYNC,
+      rpcUrl: getEnv('ZKSYNC_RPC_URL', 'https://mainnet.era.zksync.io'),
+    },
+    [ChainId.WORLDCHAIN]: {
+      name: 'Worldchain',
+      chainId: ChainId.WORLDCHAIN,
+      rpcUrl: getEnv('WORLDCHAIN_RPC_URL', 'https://rpc.worldchain.one'),
+    },
+    [ChainId.UNICHAIN]: {
+      name: 'Unichain',
+      chainId: ChainId.UNICHAIN,
+      rpcUrl: getEnv('UNICHAIN_RPC_URL', 'https://mainnet-rpc.unichain.one'),
+    },
+    [ChainId.SONEIUM]: {
+      name: 'Soneium',
+      chainId: ChainId.SONEIUM,
+      rpcUrl: getEnv('SONEIUM_RPC_URL', 'https://rpc.soneium.com'),
+    },
   },
 };
 

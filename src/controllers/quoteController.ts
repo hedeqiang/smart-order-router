@@ -1,13 +1,18 @@
 import { Request, Response } from 'express';
 import { RouterService, QuoteParams } from '../services/routerService';
 import logger from '../utils/logger';
+import { SnowflakeIdGenerator } from '../utils/snowflake';
+import config from '../config/config';
+import { ChainId } from '@uniswap/sdk-core';
 
 export class QuoteController {
   private routerService: RouterService;
-  private seen: WeakSet<object> | null = null;
+  private idGenerator: SnowflakeIdGenerator;
   
   constructor() {
     this.routerService = new RouterService();
+    // 实例化雪花ID生成器，可以根据服务器/实例ID配置 workerId 和 dataCenterId
+    this.idGenerator = new SnowflakeIdGenerator(1, 1);
   }
   
   /**
@@ -37,9 +42,22 @@ export class QuoteController {
         return;
       }
       
+      // 验证链ID是否受支持
+      const chainIdNumber = Number(chainId);
+      if (!this.isChainSupported(chainIdNumber)) {
+        res.status(400).json({ 
+          error: 'Unsupported chain ID', 
+          supportedChains: Object.keys(config.chains).map(id => parseInt(id))
+        });
+        return;
+      }
+      
+      // 获取链信息
+      const chain = config.chains[chainIdNumber];
+      
       // Prepare parameters for the router service
       const params: QuoteParams = {
-        chainId: Number(chainId),
+        chainId: chainIdNumber,
         tokenInAddress: tokenIn as string,
         tokenOutAddress: tokenOut as string,
         amount: amount as string,
@@ -59,6 +77,16 @@ export class QuoteController {
         params.deadline = Number(deadline);
       }
       
+      // 记录请求信息，包括链信息
+      logger.info('Processing quote request', {
+        chain: chain?.name,
+        chainId: chainIdNumber,
+        tokenIn: tokenIn as string,
+        tokenOut: tokenOut as string,
+        amount: amount as string,
+        type: params.type
+      });
+      
       // Get the quote
       const quote = await this.routerService.getQuote(params);
       
@@ -77,6 +105,7 @@ export class QuoteController {
       // Log all available quote information
       logger.info('Quote details', {
         chainId: quote.chainId,
+        chainName: chain?.name,
         quoteAmount: quote.quoteAmount,
         gasPriceWei: quote.gasPriceWei,
         gasUseEstimate: quote.gasUseEstimate,
@@ -91,7 +120,7 @@ export class QuoteController {
       // Format the route with additional information
       const routeWithExtraInfo = this.formatRoute(quote.route, inputToken, outputToken);
       
-      // Prepare the response
+      // Prepare the response without chainInfo
       const response = {
         chainId: quote.chainId,
         quoteId: this.generateQuoteId(),
@@ -247,8 +276,7 @@ export class QuoteController {
         const extraRouteInfo = {};
         if (route.methodParameters?.to) {
           Object.assign(extraRouteInfo, {
-            router: route.methodParameters.to,
-            routerType: this.inferProtocolFromRouter(route.methodParameters.to)
+            router: route.methodParameters.to
           });
         }
         
@@ -283,8 +311,7 @@ export class QuoteController {
         const extraRouteInfo = {};
         if (route.methodParameters?.to) {
           Object.assign(extraRouteInfo, {
-            router: route.methodParameters.to,
-            routerType: this.inferProtocolFromRouter(route.methodParameters.to)
+            router: route.methodParameters.to
           });
         }
         
@@ -381,9 +408,8 @@ export class QuoteController {
       // If methodParameters exists, use that to infer protocol type
       if (route.methodParameters && route.methodParameters.to) {
         // The address in methodParameters.to is typically the router contract
-        // which can help identify the protocol
         return [{
-          protocol: this.inferProtocolFromRouter(route.methodParameters.to),
+          protocol: 'Unknown',
           path: [], // We don't have pool addresses here
           fee: 'Unknown'
         }];
@@ -403,20 +429,6 @@ export class QuoteController {
       logger.error('Error extracting route paths', { error });
       return [];
     }
-  }
-  
-  /**
-   * Infer protocol type from router address
-   */
-  private inferProtocolFromRouter(routerAddress: string): string {
-    // Common Uniswap router addresses
-    const routerAddresses = {
-      '0x68b3465833fb72A70ecDF485E0e4C7bD8665Fc45': 'V3', // Universal Router
-      '0xE592427A0AEce92De3Edee1F18E0157C05861564': 'V3', // SwapRouter
-      '0x7a250d5630B4cF539739dF2C5dAcb4c659F2488D': 'V2'  // V2 Router
-    };
-    
-    return routerAddresses[routerAddress as keyof typeof routerAddresses] || 'Unknown';
   }
   
   /**
@@ -504,9 +516,80 @@ export class QuoteController {
   }
   
   /**
-   * Generate a unique ID for a quote
+   * Generate a unique ID for a quote using Snowflake algorithm
    */
   private generateQuoteId(): string {
-    return `q-${Date.now()}-${Math.floor(Math.random() * 1000000)}`;
+    return `q-${this.idGenerator.nextId()}`;
+  }
+  
+  /**
+   * 检查链ID是否被支持
+   * @param chainId 链ID
+   * @returns 是否支持
+   */
+  private isChainSupported(chainId: number): boolean {
+    return chainId in config.chains;
+  }
+  
+  /**
+   * Get all supported chains information
+   * @param req Express request
+   * @param res Express response
+   */
+  public getSupportedChains(req: Request, res: Response): void {
+    try {
+      // 获取精简版链信息列表用于前端显示
+      const chainsInfo = Object.values(config.chains).map(chain => ({
+        id: chain.chainId,
+        name: chain.name,
+        rpcUrl: chain.rpcUrl
+      }));
+      
+      res.status(200).json({
+        chains: chainsInfo
+      });
+    } catch (error: any) {
+      logger.error('Error getting supported chains', { error });
+      res.status(500).json({
+        error: error.message || 'An unexpected error occurred',
+      });
+    }
+  }
+  
+  /**
+   * Get detailed information for a specific chain
+   * @param req Express request
+   * @param res Express response
+   */
+  public getChainInfo(req: Request, res: Response): void {
+    try {
+      const { chainId } = req.params;
+      
+      if (!chainId) {
+        res.status(400).json({ 
+          error: 'Chain ID is required' 
+        });
+        return;
+      }
+      
+      const chainIdNumber = Number(chainId);
+      
+      if (!this.isChainSupported(chainIdNumber)) {
+        res.status(404).json({ 
+          error: 'Chain not supported', 
+          supportedChains: Object.keys(config.chains).map(id => parseInt(id))
+        });
+        return;
+      }
+      
+      const chainInfo = config.chains[chainIdNumber];
+      
+      res.status(200).json({ chain: chainInfo });
+    } catch (error: any) {
+      logger.error('Error getting chain info', { error });
+      res.status(500).json({
+        error: error.message || 'An unexpected error occurred',
+      });
+    }
   }
 } 
