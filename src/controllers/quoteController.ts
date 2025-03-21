@@ -3,16 +3,18 @@ import { RouterService, QuoteParams } from '../services/routerService';
 import logger from '../utils/logger';
 import { SnowflakeIdGenerator } from '../utils/snowflake';
 import config from '../config/config';
-import { ChainId } from '@uniswap/sdk-core';
+import { ChainId, Token } from '@uniswap/sdk-core';
 
 export class QuoteController {
   private routerService: RouterService;
   private idGenerator: SnowflakeIdGenerator;
+  private tokenCache: Map<string, Token>; // 缓存获取过的代币信息
   
   constructor() {
     this.routerService = new RouterService();
     // 实例化雪花ID生成器，可以根据服务器/实例ID配置 workerId 和 dataCenterId
     this.idGenerator = new SnowflakeIdGenerator(1, 1);
+    this.tokenCache = new Map();
   }
   
   /**
@@ -55,6 +57,15 @@ export class QuoteController {
       // 获取链信息
       const chain = config.chains[chainIdNumber];
       
+      logger.info('Processing quote request', {
+        chain: chain?.name,
+        chainId: chainIdNumber,
+        tokenIn: tokenIn as string,
+        tokenOut: tokenOut as string,
+        amount: amount as string,
+        type: type as string
+      });
+      
       // Prepare parameters for the router service
       const params: QuoteParams = {
         chainId: chainIdNumber,
@@ -77,17 +88,7 @@ export class QuoteController {
         params.deadline = Number(deadline);
       }
       
-      // 记录请求信息，包括链信息
-      logger.info('Processing quote request', {
-        chain: chain?.name,
-        chainId: chainIdNumber,
-        tokenIn: tokenIn as string,
-        tokenOut: tokenOut as string,
-        amount: amount as string,
-        type: params.type
-      });
-      
-      // Get the quote
+      // Get the quote - RouterService 内部会处理代币信息
       const quote = await this.routerService.getQuote(params);
       
       // Log the original route structure for debugging
@@ -113,20 +114,59 @@ export class QuoteController {
         methodParametersTo: quote.methodParameters?.to,
       });
       
-      // Try to extract token information directly from the request
-      const inputToken = { symbol: 'Input', address: tokenIn as string };
-      const outputToken = { symbol: 'Output', address: tokenOut as string };
+      // 准备输入输出代币信息 - 使用 Token 缓存或从路由对象中提取
+      let inputToken = null;
+      let outputToken = null;
       
-      // Format the route with additional information
+      try {
+        // 尝试从路由对象中提取代币信息
+        if (quote.route.trade?.inputAmount?.currency) {
+          const currency = quote.route.trade.inputAmount.currency;
+          inputToken = {
+            symbol: currency.symbol || 'Input',
+            address: currency.isNative ? '0xEeeeeEeeeEeEeeEeEeEeeEEEeeeeEeeeeeeeEEeE' : currency.address,
+            isNative: currency.isNative || false
+          };
+        }
+        
+        if (quote.route.trade?.outputAmount?.currency) {
+          const currency = quote.route.trade.outputAmount.currency;
+          outputToken = {
+            symbol: currency.symbol || 'Output',
+            address: currency.isNative ? '0xEeeeeEeeeEeEeeEeEeEeeEEEeeeeEeeeeeeeEEeE' : currency.address,
+            isNative: currency.isNative || false
+          };
+        }
+      } catch (error) {
+        logger.warn('Failed to extract token info from route', { error });
+      }
+      
+      // 如果无法从路由中提取，使用默认值
+      if (!inputToken) {
+        inputToken = { symbol: 'Input', address: tokenIn as string };
+      }
+      
+      if (!outputToken) {
+        outputToken = { symbol: 'Output', address: tokenOut as string };
+      }
+      
+      // 格式化gas价格
+      const nativeCurrency = this.getNativeCurrency(chainIdNumber);
+      const formattedGasPrice = {
+        wei: quote.gasPriceWei,
+        symbol: nativeCurrency.symbol
+      };
+      
+      // 格式化路由
       const routeWithExtraInfo = this.formatRoute(quote.route, inputToken, outputToken);
       
-      // Prepare the response without chainInfo
+      // 最终响应
       const response = {
         chainId: quote.chainId,
         quoteId: this.generateQuoteId(),
         quoteAmount: quote.quoteAmount,
         gasEstimate: quote.gasUseEstimate,
-        gasPrice: quote.gasPriceWei,
+        gasPrice: formattedGasPrice,
         simulationStatus: quote.simulationStatus,
         route: routeWithExtraInfo,
         methodParameters: quote.methodParameters,
@@ -134,10 +174,7 @@ export class QuoteController {
       
       res.status(200).json(response);
     } catch (error: any) {
-      logger.error('Error in quote controller', { error });
-      res.status(500).json({
-        error: error.message || 'An unexpected error occurred',
-      });
+      this.handleError(error, res);
     }
   }
   
@@ -591,5 +628,52 @@ export class QuoteController {
         error: error.message || 'An unexpected error occurred',
       });
     }
+  }
+  
+  /**
+   * 获取指定链的原生代币信息
+   * @param chainId 链ID
+   * @returns 原生代币信息，如果链不存在则返回ETH作为默认值
+   */
+  private getNativeCurrency(chainId: number) {
+    const chain = config.chains[chainId];
+    if (!chain) {
+      // 默认返回ETH信息
+      return {
+        name: 'Ether',
+        symbol: 'ETH',
+        decimals: 18
+      };
+    }
+    return chain.nativeCurrency;
+  }
+  
+  private handleError(error: any, res: Response) {
+    const errorMessage = error.message || 'An unknown error occurred';
+    logger.error('Error in quote controller', { error });
+    
+    // 检查错误消息，添加建议
+    let suggestion: string | undefined;
+    let response: any = { error: errorMessage };
+    
+    if (errorMessage.includes('Chain 56') || errorMessage.toLowerCase().includes('bnb chain')) {
+      suggestion = 'For BNB Chain, consider using PancakeSwap API or SDK instead.';
+    } else if (errorMessage.includes('may not be fully supported by Uniswap')) {
+      // 从错误消息中提取链ID
+      const chainIdMatch = errorMessage.match(/Chain (\d+)/);
+      const chainId = chainIdMatch ? parseInt(chainIdMatch[1]) : null;
+      
+      if (chainId) {
+        suggestion = `Consider using a native DEX for chain ${chainId}.`;
+      } else {
+        suggestion = 'Consider using a chain-specific DEX that supports this blockchain.';
+      }
+    }
+    
+    if (suggestion) {
+      response.suggestion = suggestion;
+    }
+    
+    return res.status(500).json(response);
   }
 } 

@@ -1,25 +1,50 @@
 import winston from 'winston';
-import config from '../config/config';
+import { format } from 'winston';
+import fs from 'fs';
+import path from 'path';
+
+// 确保日志目录存在
+const logDir = path.join(process.cwd(), 'logs');
+if (!fs.existsSync(logDir)) {
+  fs.mkdirSync(logDir);
+}
 
 const logger = winston.createLogger({
-  level: config.logLevel,
-  format: winston.format.combine(
-    winston.format.timestamp(),
-    winston.format.json()
+  level: process.env.LOG_LEVEL || 'info',
+  format: format.combine(
+    format.timestamp({ format: 'YYYY-MM-DD HH:mm:ss' }),
+    format.errors({ stack: true }),
+    format.splat(),
+    format.json()
   ),
-  defaultMeta: { service: 'smart-order-router-api' },
+  defaultMeta: { service: 'uniswap-smart-order-router' },
   transports: [
+    // 控制台输出
     new winston.transports.Console({
-      format: winston.format.combine(
-        winston.format.colorize(),
-        winston.format.printf(({ timestamp, level, message, ...meta }) => {
-          return `${timestamp} [${level}]: ${message} ${
-            Object.keys(meta).length ? JSON.stringify(meta, null, 2) : ''
-          }`;
-        })
-      ),
+      format: format.combine(
+        format.colorize(),
+        format.printf(
+          info => `${info.timestamp} ${info.level}: ${info.message} ${
+            Object.keys(info).length > 3 ? 
+              JSON.stringify(Object.fromEntries(
+                Object.entries(info).filter(
+                  ([key]) => !['timestamp', 'service', 'level', 'message'].includes(key)
+                )
+              )) : ''
+          }`
+        )
+      )
     }),
-  ],
+    
+    // 文件输出
+    new winston.transports.File({ 
+      filename: path.join(logDir, 'error.log'), 
+      level: 'error' 
+    }),
+    new winston.transports.File({ 
+      filename: path.join(logDir, 'app.log') 
+    })
+  ]
 });
 
 export default logger; 
