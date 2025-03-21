@@ -1,0 +1,102 @@
+{
+  "0xa77e70d0af1ac7ff86726740db1bd065c3566937": {
+      "name": "w3ULL",
+      "symbol": "w3ULL",
+      "decimals": 18
+  },
+  "0xb97ef9ef8734c71904d8002f8b6bc66dd9c48a6e": {
+      "name": "USD Coin",
+      "symbol": "USDC",
+      "decimals": 6
+  },
+  "0xe8385cecb013561b69beb63ff59f4d10734881f3": {
+      "name": "Gecko Inu",
+      "symbol": "GEC",
+      "decimals": 18
+  },
+  "0x9f285507ea5b4f33822ca7abb5ec8953ce37a645": {
+      "name": "DegisToken",
+      "symbol": "DEG",
+      "decimals": 18
+  },
+  "0x1c20e891bab6b1727d14da358fae2984ed9b59eb": {
+      "name": "TrueUSD",
+      "symbol": "TUSD",
+      "decimals": 18
+  },
+  "0x714f020c54cc9d104b6f4f6998c63ce2a31d1888": {
+      "name": "STEP.APP",
+      "symbol": "FITFI",
+      "decimals": 18
+  },
+  "0x6e84a6216ea6dacc71ee8e6b0a5b7322eebc0fdd": {
+      "name": "JoeToken",
+      "symbol": "JOE",
+      "decimals": 18
+  },
+  "0x31c994ac062c1970c086260bc61babb708643fac": {
+      "name": "XANA",
+      "symbol": "XETA",
+      "decimals": 18
+  },
+  "0xd402298a793948698b9a63311404fbbee944eafd": {
+      "name": "SHRAPToken",
+      "symbol": "SHRAP",
+      "decimals": 18
+  },
+  "0x420fca0121dc28039145009570975747295f2329": {
+      "name": "COQINU",
+      "symbol": "COQ",
+      "decimals": 18
+  },
+  "0x9702230a8ea53601f5cd2dc00fdbc13d4df4a8c7": {
+      "name": "TetherToken",
+      "symbol": "USDt",
+      "decimals": 6
+  },
+  "0x6985884c4392d348587b19cb9eaaf157f13271cd": {
+      "name": "LayerZero",
+      "symbol": "ZRO",
+      "decimals": 18
+  },
+  "0x62edc0692bd897d2295872a9ffcac5425011c661": {
+      "name": "GMX",
+      "symbol": "GMX",
+      "decimals": 18
+  },
+  "0xce1bffbd5374dac86a2893119683f4911a2f7814": {
+      "name": "Spell Token",
+      "symbol": "SPELL",
+      "decimals": 18
+  },
+  "0x9c9e5fd8bbc25984b178fdce6117defa39d2db39": {
+      "name": "BUSD Token",
+      "symbol": "BUSD",
+      "decimals": 18
+  },
+  "0x2f6f07cdcf3588944bf4c42ac74ff24bf56e7590": {
+      "name": "StargateToken",
+      "symbol": "STG",
+      "decimals": 18
+  },
+  "0x8729438eb15e2c8b576fcc6aecda6a148776c0f5": {
+      "name": "BENQI",
+      "symbol": "QI",
+      "decimals": 18
+  },
+  "0x1f1e7c893855525b303f99bdf5c3c05be09ca251": {
+      "name": "Synapse",
+      "symbol": "SYN",
+      "decimals": 18
+  },
+  "0x44c784266cf024a60e8acf2427b9857ace194c5d": {
+      "name": "Axelar",
+      "symbol": "AXL",
+      "decimals": 6
+  },
+  "0x46b9144771cb3195d66e4eda643a7493fadcaf9d": {
+      "name": "BloodLoop Shard",
+      "symbol": "BLS",
+      "decimals": 18
+  }
+}

@@ -1,0 +1,17 @@
+{
+  "0x94b008aa00579c1307b0ef2c499ad98a8ce58e58": {
+    "name": "Tether USD",
+    "symbol": "USDT",
+    "decimals": 6
+  },
+  "0x7f5c764cbc14f9669b88837ca1490cca17c31607": {
+    "name": "USD Coin",
+    "symbol": "USDC",
+    "decimals": 6
+  },
+  "0x4200000000000000000000000000000000000006": {
+    "name": "Wrapped Ether",
+    "symbol": "WETH",
+    "decimals": 18
+  }
+} 

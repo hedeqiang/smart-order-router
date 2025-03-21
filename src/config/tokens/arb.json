@@ -1,0 +1,247 @@
+{
+  "0xfd086bc7cd5c481dcc9c85ebe478a1c0b69fcbb9": {
+      "name": "Tether USD",
+      "symbol": "USDT",
+      "decimals": 6
+  },
+  "0x912ce59144191c1204e64559fe8253a0e49e6548": {
+      "name": "Arbitrum",
+      "symbol": "ARB",
+      "decimals": 18
+  },
+  "0x00cbcf7b3d37844e44b888bc747bdd75fcf4e555": {
+      "name": "xPet.tech Token",
+      "symbol": "XPET",
+      "decimals": 18
+  },
+  "0x4cb9a7ae498cedcbb5eae9f25736ae7d428c9d66": {
+      "name": "Xai",
+      "symbol": "XAI",
+      "decimals": 18
+  },
+  "0x3082cc23568ea640225c2467653db90e9250aaa0": {
+      "name": "Radiant",
+      "symbol": "RDNT",
+      "decimals": 18
+  },
+  "0x3d9907f9a368ad0a51be60f7da3b97cf940982d8": {
+      "name": "Camelot token",
+      "symbol": "GRAIL",
+      "decimals": 18
+  },
+  "0x0c5fa0e07949f941a6c2c29a008252db1527d6ee": {
+      "name": "OpulousToken",
+      "symbol": "OPUL",
+      "decimals": 18
+  },
+  "0x088cd8f5ef3652623c22d48b1605dcfe860cd704": {
+      "name": "VelaToken",
+      "symbol": "VELA",
+      "decimals": 18
+  },
+  "0x86efb351b092a32d833a1ad7374d9bf0fc164aab": {
+      "name": "bamboo",
+      "symbol": "BBO",
+      "decimals": 18
+  },
+  "0xa684cd057951541187f288294a1e1c2646aa2d24": {
+      "name": "Vesta",
+      "symbol": "VSTA",
+      "decimals": 18
+  },
+  "0xaf88d065e77c8cc2239327c5edb3a432268e5831": {
+      "name": "USD Coin",
+      "symbol": "USDC",
+      "decimals": 6
+  },
+  "0x539bde0d7dbd336b79148aa742883198bbf60342": {
+      "name": "MAGIC",
+      "symbol": "MAGIC",
+      "decimals": 18
+  },
+  "0x6694340fc020c5e6b96567843da2df01b2ce1eb6": {
+      "name": "StargateToken",
+      "symbol": "STG",
+      "decimals": 18
+  },
+  "0x0c880f6761f1af8d9aa9c466984b80dab9a8c9e8": {
+      "name": "Pendle",
+      "symbol": "PENDLE",
+      "decimals": 18
+  },
+  "0x09e18590e8f76b6cf471b3cd75fe1a1a9d2b2c2b": {
+      "name": "AIDOGE",
+      "symbol": "AIDOGE",
+      "decimals": 6
+  },
+  "0x7a2c1b8e26c48a5b73816b7ec826fd4053f5f34b": {
+      "name": "ZZZ",
+      "symbol": "ZZZ",
+      "decimals": 18
+  },
+  "0xef04804e1e474d3f9b73184d7ef5d786f3fce930": {
+      "name": "Wall Street Games",
+      "symbol": "WSG",
+      "decimals": 18
+  },
+  "0x6fd58f5a2f3468e35feb098b5f59f04157002407": {
+      "name": "poor guy",
+      "symbol": "pogai",
+      "decimals": 18
+  },
+  "0xf0a479c9c3378638ec603b8b6b0d75903902550b": {
+      "name": "CATCH",
+      "symbol": "CATCH",
+      "decimals": 18
+  },
+  "0x1c43d05be7e5b54d506e3ddb6f0305e8a66cd04e": {
+      "name": "ZTX",
+      "symbol": "ZTX",
+      "decimals": 18
+  },
+  "0x95146881b86b3ee99e63705ec87afe29fcc044d9": {
+      "name": "Vertex",
+      "symbol": "VRTX",
+      "decimals": 18
+  },
+  "0x153516904bc7e28ae7c526e8aee4ec5eae878edb": {
+      "name": "Plexus",
+      "symbol": "PLX",
+      "decimals": 18
+  },
+  "0x580e933d90091b9ce380740e3a4a39c67eb85b4c": {
+      "name": "GameSwift",
+      "symbol": "GSWIFT",
+      "decimals": 18
+  },
+  "0x23ee2343b892b1bb63503a4fabc840e0e2c6810f": {
+      "name": "Axelar",
+      "symbol": "AXL",
+      "decimals": 6
+  },
+  "0xfc5a1a6eb076a2c7ad06ed22c90d7e710e35ad0a": {
+      "name": "GMX",
+      "symbol": "GMX",
+      "decimals": 18
+  },
+  "0x18c11fd286c5ec11c3b683caa813b77f5163a122": {
+      "name": "Gains Network",
+      "symbol": "GNS",
+      "decimals": 18
+  },
+  "0x9623063377ad1b27544c965ccd7342f7ea7e88c7": {
+      "name": "Graph Token",
+      "symbol": "GRT",
+      "decimals": 18
+  },
+  "0x6985884c4392d348587b19cb9eaaf157f13271cd": {
+      "name": "LayerZero",
+      "symbol": "ZRO",
+      "decimals": 18
+  },
+  "0x7189fb5b6504bbff6a852b13b7b82a3c118fdc27": {
+      "name": "ether.fi governance token",
+      "symbol": "ETHFI",
+      "decimals": 18
+  },
+  "0xcafcd85d8ca7ad1e1c6f82f651fa15e33aefd07b": {
+      "name": "Wootrade Network",
+      "symbol": "WOO",
+      "decimals": 18
+  },
+  "0x7448c7456a97769f6cd04f1e83a4a23ccdc46abd": {
+      "name": "Maverick Token",
+      "symbol": "MAV",
+      "decimals": 18
+  },
+  "0x0c4681e6c0235179ec3d4f4fc4df3d14fdd96017": {
+      "name": "Radiant",
+      "symbol": "RDNT",
+      "decimals": 18
+  },
+  "0x11cdb42b0eb46d95f990bedd4695a6e3fa034978": {
+      "name": "Curve DAO Token",
+      "symbol": "CRV",
+      "decimals": 18
+  },
+  "0x69eb4fa4a2fbd498c257c57ea8b7655a2559a581": {
+      "name": "DODO bird",
+      "symbol": "DODO",
+      "decimals": 18
+  },
+  "0x080f6aed32fc474dd5717105dba5ea57268f46eb": {
+      "name": "Synapse",
+      "symbol": "SYN",
+      "decimals": 18
+  },
+  "0x835bfe0ac8ea77f22e13795a49054ab2d6699982": {
+      "name": "Hashflow",
+      "symbol": "HFT",
+      "decimals": 18
+  },
+  "0xda10009cbd5d07dd0cecc66161fc93d7c9000da1": {
+      "name": "Dai Stablecoin",
+      "symbol": "DAI",
+      "decimals": 18
+  },
+  "0x371c7ec6d8039ff7933a2aa28eb827ffe1f52f07": {
+      "name": "JoeToken",
+      "symbol": "JOE",
+      "decimals": 18
+  },
+  "0xda0a57b710768ae17941a9fa33f8b720c8bd9ddd": {
+      "name": "Marlin POND",
+      "symbol": "POND",
+      "decimals": 18
+  },
+  "0xff970a61a04b1ca14834a43f5de4533ebddb5cc8": {
+      "name": "USD Coin (Arb1)",
+      "symbol": "USDC",
+      "decimals": 6
+  },
+  "0xe10d4a4255d2d35c9e23e2c4790e073046fbaf5c": {
+      "name": "LandX Governance Token",
+      "symbol": "LNDX",
+      "decimals": 6
+  },
+  "0x9500ba777560daf9d3ab148ea1cf1ed39df9ebdb": {
+      "name": "STYLE Token",
+      "symbol": "STYLE",
+      "decimals": 18
+  },
+  "0xdc8184ba488e949815d4aafb35b3c56ad03b4179": {
+      "name": "Roseon",
+      "symbol": "ROSX",
+      "decimals": 18
+  },
+  "0xacc51ffdef63fb0c014c882267c3a17261a5ed50": {
+      "name": "StrykeToken",
+      "symbol": "SYK",
+      "decimals": 18
+  },
+  "0x89c49a3fa372920ac23ce757a029e6936c0b8e02": {
+      "name": "Crypto Unicorns",
+      "symbol": "CU",
+      "decimals": 18
+  },
+  "0x69a1e699f562d7af66fc6cc473d99f4430c3acd2": {
+      "name": "Param",
+      "symbol": "PARAM",
+      "decimals": 18
+  },
+  "0xca4e51f6ad4afd9d1068e5899de9dd7d73f3463d": {
+      "name": "AARK Token",
+      "symbol": "AARK",
+      "decimals": 18
+  },
+  "0x1a6b3a62391eccaaa992ade44cd4afe6bec8cff1": {
+      "name": "UXLINK Token",
+      "symbol": "UXLINK",
+      "decimals": 18
+  },
+  "0x412F4b922bB9afdc65c7e9B669F4bEC6e554452a": {
+      "name": "RepubliK",
+      "symbol": "RPK",
+      "decimals": 18
+  }
+}

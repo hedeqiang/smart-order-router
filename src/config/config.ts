@@ -95,7 +95,7 @@ const config: AppConfig = {
         name: 'MATIC',
         symbol: NativeCurrencyName.MATIC,
         decimals: 18,
-        wrappedAddress: '0x0d500B1d8E8eF31E21C99d1Db9A6444d3ADf1270' // WMATIC
+        wrappedAddress: '0x0d500B1d8E8eF31E21C99d1Db9A6444d3ADf1270' // WPOL
       },
       blockExplorerUrl: 'https://polygonscan.com'
     },
